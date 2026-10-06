@@ -7,7 +7,13 @@ def filter_unseen(df: pd.DataFrame, seen: set) -> pd.DataFrame:
 
     Add the new pairs to `seen` (modify the set in place).
     """
-    ...
+    if df.empty:
+        return df
+    mask = []
+    for key in zip(df["id"], df["updated"]):
+        mask.append(key not in seen)
+        seen.add(key)
+    return df[mask]
 
 
 def run_stream(feed: str, interval_s: int, duration_s: int, out_path: str) -> None:
