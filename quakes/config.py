@@ -10,7 +10,7 @@ TARGET = "big_quake"
 
 NUMERIC: list[str] = [    # numeric feature columns
     "lat", "lon", "depth_km", "abs_lat", "nst", "gap", "dmin", "rms",
-    "hour", "dayofweek", "update_lag_hours",
+    "hour", "dayofweek", "update_lag_hours", "events_last_24h_in_region",
     "is_reviewed", "nst_missing", "is_shallow",
 ]
 NOMINAL: list[str] = [    # categorical feature columns (one-hot encoded)

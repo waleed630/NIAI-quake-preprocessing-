@@ -16,8 +16,9 @@ import requests
 
 from . import config
 from .cleaning import clean, dedupe_latest
-from .features import (add_location_features, add_quality_features, add_target,
-                       add_time_features, drop_leaky_columns, group_rare)
+from .features import (add_location_features, add_quality_features,
+                       add_region_activity, add_target, add_time_features,
+                       drop_leaky_columns, group_rare)
 from .fetch import fetch_feed, geojson_to_df
 from .transform import SCALERS, build_preprocessor, split_data
 
@@ -61,6 +62,7 @@ def main() -> None:
     df = add_time_features(df)
     df = add_quality_features(df)
     df = add_location_features(df)
+    df = add_region_activity(df)
     df["region"] = group_rare(df["region"])
     df = add_target(df)
     df = drop_leaky_columns(df)

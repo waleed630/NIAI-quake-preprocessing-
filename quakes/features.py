@@ -1,4 +1,5 @@
 """Task 4: feature engineering."""
+import numpy as np
 import pandas as pd
 
 from . import config
@@ -30,6 +31,20 @@ def add_location_features(df: pd.DataFrame) -> pd.DataFrame:
     out = df.copy()
     out["abs_lat"] = out["lat"].abs()
     out["is_shallow"] = (out["depth_km"] < 70).astype(int)
+    return out
+
+
+def add_region_activity(df: pd.DataFrame) -> pd.DataFrame:
+    """Add 'events_last_24h_in_region' = number of earlier events in the same
+    'region' during the 24 hours before each event."""
+    out = df.copy()
+    counts = pd.Series(0, index=out.index, dtype=int)
+    for _, times in out["time"].groupby(out["region"]):
+        times = times.sort_values()
+        values = times.dt.tz_convert(None).to_numpy()
+        start = np.searchsorted(values, values - np.timedelta64(24, "h"), side="left")
+        counts.loc[times.index] = np.arange(len(values)) - start
+    out["events_last_24h_in_region"] = counts
     return out
 
 
