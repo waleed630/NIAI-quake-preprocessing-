@@ -20,7 +20,7 @@ def keep_earthquakes(df: pd.DataFrame) -> pd.DataFrame:
 def extract_region(place: pd.Series) -> pd.Series:
     """Text after the last comma, or the whole string if there is no comma.
     Missing places become 'Unknown'."""
-    ...
+    return place.str.rsplit(",", n=1).str[-1].str.strip().fillna("Unknown")
 
 
 def iqr_outlier_mask(s: pd.Series, k: float = 1.5) -> pd.Series:
