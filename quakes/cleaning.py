@@ -32,7 +32,9 @@ def extract_region(place: pd.Series) -> pd.Series:
 
 def iqr_outlier_mask(s: pd.Series, k: float = 1.5) -> pd.Series:
     """True where a value lies outside [Q1 - k*IQR, Q3 + k*IQR]."""
-    ...
+    q1, q3 = s.quantile(0.25), s.quantile(0.75)
+    iqr = q3 - q1
+    return (s < q1 - k * iqr) | (s > q3 + k * iqr)
 
 
 def drop_missing_target(df: pd.DataFrame) -> pd.DataFrame:
