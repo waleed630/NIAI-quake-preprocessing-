@@ -23,7 +23,8 @@ def add_location_features(df: pd.DataFrame) -> pd.DataFrame:
 
 def group_rare(s: pd.Series, top_k: int = 15) -> pd.Series:
     """Keep the top_k most frequent values; replace all others with 'Other'."""
-    ...
+    top = s.value_counts().index[:top_k]
+    return s.where(s.isin(top), "Other")
 
 
 def add_target(df: pd.DataFrame) -> pd.DataFrame:
