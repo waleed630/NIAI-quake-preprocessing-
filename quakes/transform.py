@@ -1,8 +1,15 @@
 """Task 5: split and preprocess."""
 import pandas as pd
 from sklearn.compose import ColumnTransformer
+from sklearn.impute import SimpleImputer
+from sklearn.model_selection import train_test_split
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import (MinMaxScaler, OneHotEncoder, RobustScaler,
+                                   StandardScaler)
 
 from . import config
+
+SCALERS = {"standard": StandardScaler, "minmax": MinMaxScaler, "robust": RobustScaler}
 
 
 def split_data(df: pd.DataFrame, test_size: float = 0.2):
@@ -21,4 +28,17 @@ def build_preprocessor(scaler: str = "robust") -> ColumnTransformer:
              ('standard', 'minmax', 'robust')
     nominal: most-frequent imputation, then one-hot (handle_unknown='ignore')
     """
-    ...
+    if scaler not in SCALERS:
+        raise ValueError(f"Unknown scaler {scaler!r}; choose from {sorted(SCALERS)}")
+    numeric = Pipeline([
+        ("impute", SimpleImputer(strategy="median")),
+        ("scale", SCALERS[scaler]()),
+    ])
+    nominal = Pipeline([
+        ("impute", SimpleImputer(strategy="most_frequent")),
+        ("onehot", OneHotEncoder(handle_unknown="ignore", sparse_output=False)),
+    ])
+    return ColumnTransformer([
+        ("num", numeric, config.NUMERIC),
+        ("nom", nominal, config.NOMINAL),
+    ])
