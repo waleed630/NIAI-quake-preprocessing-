@@ -1,8 +1,15 @@
 """Task 5: split and preprocess."""
 import pandas as pd
 from sklearn.compose import ColumnTransformer
+from sklearn.impute import SimpleImputer
+from sklearn.model_selection import train_test_split
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import (MinMaxScaler, OneHotEncoder, RobustScaler,
+                                   StandardScaler)
 
 from . import config
+
+SCALERS = {"standard": StandardScaler, "minmax": MinMaxScaler, "robust": RobustScaler}
 
 
 def split_data(df: pd.DataFrame, test_size: float = 0.2):
@@ -11,7 +18,10 @@ def split_data(df: pd.DataFrame, test_size: float = 0.2):
     Stratified on config.TARGET, seeded with config.SEED.
     Neither the target nor 'mag' may remain in X.
     """
-    ...
+    y = df[config.TARGET]
+    X = df.drop(columns=[config.TARGET, "mag"], errors="ignore")
+    return train_test_split(X, y, test_size=test_size, stratify=y,
+                            random_state=config.SEED)
 
 
 def build_preprocessor(scaler: str = "robust") -> ColumnTransformer:
