@@ -25,7 +25,10 @@ def add_quality_features(df: pd.DataFrame) -> pd.DataFrame:
 
 def add_location_features(df: pd.DataFrame) -> pd.DataFrame:
     """Add 'abs_lat' and 'is_shallow' (1 if depth_km < 70 else 0)."""
-    ...
+    out = df.copy()
+    out["abs_lat"] = out["lat"].abs()
+    out["is_shallow"] = (out["depth_km"] < 70).astype(int)
+    return out
 
 
 def group_rare(s: pd.Series, top_k: int = 15) -> pd.Series:
