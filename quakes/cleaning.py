@@ -12,7 +12,9 @@ def epoch_ms_to_datetime(df: pd.DataFrame) -> pd.DataFrame:
 
 def dedupe_latest(df: pd.DataFrame) -> pd.DataFrame:
     """One row per 'id', keeping the row with the greatest 'updated'."""
-    ...
+    return (df.sort_values("updated")
+              .drop_duplicates(subset="id", keep="last")
+              .sort_index())
 
 
 def keep_earthquakes(df: pd.DataFrame) -> pd.DataFrame:
