@@ -8,7 +8,6 @@ PROCESSED_DIR = ROOT / "data" / "processed"
 SEED = 42
 TARGET = "big_quake"
 
-# TODO (Task 4 and 5): fill these in after you have explored the data.
 NUMERIC: list[str] = [    # numeric feature columns
     "lat", "lon", "depth_km", "abs_lat", "nst", "gap", "dmin", "rms",
     "hour", "dayofweek", "update_lag_hours",
