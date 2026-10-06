@@ -39,7 +39,7 @@ def iqr_outlier_mask(s: pd.Series, k: float = 1.5) -> pd.Series:
 
 def drop_missing_target(df: pd.DataFrame) -> pd.DataFrame:
     """Drop rows where 'mag' is missing."""
-    ...
+    return df.dropna(subset=["mag"])
 
 
 def clean(df: pd.DataFrame) -> pd.DataFrame:
