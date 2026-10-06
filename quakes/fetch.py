@@ -20,4 +20,9 @@ def geojson_to_df(payload: dict) -> pd.DataFrame:
     Columns: 'id' (top level of each feature), every key in 'properties',
     plus 'lon', 'lat', 'depth_km' from geometry.coordinates = [lon, lat, depth].
     """
-    ...
+    rows = []
+    for feature in payload["features"]:
+        lon, lat, depth_km = feature["geometry"]["coordinates"]
+        rows.append({"id": feature["id"], **feature["properties"],
+                     "lon": lon, "lat": lat, "depth_km": depth_km})
+    return pd.DataFrame(rows)
