@@ -4,7 +4,10 @@ import pandas as pd
 
 def epoch_ms_to_datetime(df: pd.DataFrame) -> pd.DataFrame:
     """Convert 'time' and 'updated' (epoch milliseconds) to UTC datetimes."""
-    ...
+    out = df.copy()
+    for col in ("time", "updated"):
+        out[col] = pd.to_datetime(out[col], unit="ms", utc=True)
+    return out
 
 
 def dedupe_latest(df: pd.DataFrame) -> pd.DataFrame:
