@@ -1,6 +1,8 @@
 """Task 4: feature engineering."""
 import pandas as pd
 
+from . import config
+
 
 def add_time_features(df: pd.DataFrame) -> pd.DataFrame:
     """Add 'hour' and 'dayofweek' (UTC) from 'time'."""
@@ -39,7 +41,9 @@ def group_rare(s: pd.Series, top_k: int = 15) -> pd.Series:
 
 def add_target(df: pd.DataFrame) -> pd.DataFrame:
     """Add 'big_quake' = 1 if mag >= 4.5 else 0."""
-    ...
+    out = df.copy()
+    out[config.TARGET] = (out["mag"] >= 4.5).astype(int)
+    return out
 
 
 def drop_leaky_columns(df: pd.DataFrame) -> pd.DataFrame:
