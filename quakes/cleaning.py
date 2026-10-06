@@ -14,7 +14,9 @@ def dedupe_latest(df: pd.DataFrame) -> pd.DataFrame:
 
 def keep_earthquakes(df: pd.DataFrame) -> pd.DataFrame:
     """Normalise 'type' (strip, lowercase) and keep only 'earthquake'."""
-    ...
+    out = df.copy()
+    out["type"] = out["type"].str.strip().str.lower()
+    return out[out["type"] == "earthquake"]
 
 
 def extract_region(place: pd.Series) -> pd.Series:
