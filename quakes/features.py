@@ -48,4 +48,4 @@ def add_target(df: pd.DataFrame) -> pd.DataFrame:
 
 def drop_leaky_columns(df: pd.DataFrame) -> pd.DataFrame:
     """Drop every column listed in config.LEAKY (ignore ones that are absent)."""
-    ...
+    return df.drop(columns=config.LEAKY, errors="ignore")
