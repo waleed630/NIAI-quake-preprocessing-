@@ -16,7 +16,11 @@ def add_quality_features(df: pd.DataFrame) -> pd.DataFrame:
     is_reviewed      = 1 if status == 'reviewed' else 0
     nst_missing      = 1 if 'nst' is missing else 0
     """
-    ...
+    out = df.copy()
+    out["update_lag_hours"] = (out["updated"] - out["time"]).dt.total_seconds() / 3600
+    out["is_reviewed"] = (out["status"] == "reviewed").astype(int)
+    out["nst_missing"] = out["nst"].isna().astype(int)
+    return out
 
 
 def add_location_features(df: pd.DataFrame) -> pd.DataFrame:
