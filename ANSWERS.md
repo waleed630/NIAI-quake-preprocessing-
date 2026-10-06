@@ -1,6 +1,6 @@
 # Day 1 Lab: Answers
 
-Name:
+Name: Muhammad Waleed Bin Latif
 
 ## 1. Leakage
 Which columns did you drop and why? Is `tsunami` leaky? Is `magType`?
