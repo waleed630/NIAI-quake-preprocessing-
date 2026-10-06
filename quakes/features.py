@@ -4,7 +4,10 @@ import pandas as pd
 
 def add_time_features(df: pd.DataFrame) -> pd.DataFrame:
     """Add 'hour' and 'dayofweek' (UTC) from 'time'."""
-    ...
+    out = df.copy()
+    out["hour"] = out["time"].dt.hour
+    out["dayofweek"] = out["time"].dt.dayofweek
+    return out
 
 
 def add_quality_features(df: pd.DataFrame) -> pd.DataFrame:
