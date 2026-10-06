@@ -44,4 +44,10 @@ def drop_missing_target(df: pd.DataFrame) -> pd.DataFrame:
 
 def clean(df: pd.DataFrame) -> pd.DataFrame:
     """Chain the steps above (think about the order) and add a 'region' column."""
-    ...
+    # Dedupe first so the latest revision of each event decides its type and mag.
+    out = dedupe_latest(df)
+    out = keep_earthquakes(out)
+    out = drop_missing_target(out)
+    out = epoch_ms_to_datetime(out)
+    out["region"] = extract_region(out["place"])
+    return out.reset_index(drop=True)
